@@ -1,0 +1,47 @@
+// src/api/index.ts
+import axios from 'axios';
+import type { AxiosInstance } from 'axios';
+
+const API_BASE = 'http://localhost:9000/api';
+
+// Create axios instance
+const api: AxiosInstance = axios.create({
+  baseURL: API_BASE,
+  headers: { 'Content-Type': 'application/json' },
+});
+
+// Set auth token in headers
+export const setAuthToken = (token?: string) => {
+  if (token) api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+  else delete api.defaults.headers.common['Authorization'];
+};
+
+// Payload types
+export interface AuthPayload {
+  username?: string;
+  email: string;
+  password: string;
+}
+
+export interface ProductPayload {
+  name: string;
+  brand: string;
+  type: string;
+  warrantyPeriod: number;
+  startDate: string;
+  userId: number;
+}
+
+// Auth APIs
+export const register = (payload: AuthPayload) => api.post('/users', payload);
+export const login = (payload: AuthPayload) => api.post('/users/login', payload);
+
+// Product APIs
+export const createProduct = (payload: ProductPayload) => api.post('/products/create', payload);
+export const getProducts = () => api.get('/products/list');
+export const getUserProduct = (userId: number) => api.get(`/products/get/${userId}`);
+export const updateProduct = (id: number, payload: Partial<ProductPayload>) =>
+  api.put(`/products/update/${id}`, payload);
+export const deleteProduct = (id: number) => api.delete(`/products/delete/${id}`);
+
+export default api;

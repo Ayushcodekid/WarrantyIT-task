@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom styles can be added here */
+
+#root {
+    margin: 0 auto;
+    padding: 0rem;
+    max-width: 100%;
+}
+
+:root {
+  --gradient-hero: linear-gradient(135deg, hsl(220, 64%, 25%), hsl(240 40% 12%), hsl(260 30% 8%));
+}
+
+.bg-hero {
+  background: var(--gradient-hero);
+}
