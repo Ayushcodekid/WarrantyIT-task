@@ -10,7 +10,7 @@ Product.belongsTo(User, { foreignKey: "userId" });
 // Create a product
 const createProduct = async (req, res) => {
   try {
-    const { name, brand, type, warrantyPeriod, startDate, userId } = req.body;
+    const { name, brand, type, modelNumber, warrantyPeriod, price, description, startDate, userId } = req.body;
 
     // optional: validate that user exists
     const user = await User.findByPk(userId);
@@ -20,7 +20,10 @@ const createProduct = async (req, res) => {
       name,
       brand,
       type,
+      modelNumber,
       warrantyPeriod,
+      price,
+      description,
       startDate,
       userId,
     });

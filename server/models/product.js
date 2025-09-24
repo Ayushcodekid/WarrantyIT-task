@@ -12,8 +12,20 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
+    modelNumber: {
+      type: DataTypes.STRING,
+      allowNull: true, // optional
+    },
     warrantyPeriod: {
       type: DataTypes.STRING,
+    },
+    price: {
+      type: DataTypes.FLOAT,
+      allowNull: true, // optional
+    },
+    description: {
+      type: DataTypes.TEXT,
+      allowNull: true, // optional
     },
     startDate: {
       type: DataTypes.DATEONLY,

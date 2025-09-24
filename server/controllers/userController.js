@@ -8,6 +8,12 @@ const createUser = async (req, res) => {
   try {
     const { username, email, password } = req.body;
 
+    // check if user already exists
+    const existingUser = await User.findOne({ where: { email } });
+    if (existingUser) {
+      return res.status(409).json({ error: "User already exists with this email" });
+    }
+    
     // hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 

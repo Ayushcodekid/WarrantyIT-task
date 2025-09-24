@@ -1,8 +1,10 @@
 // src/components/Register.tsx
-import React, { useState } from 'react';
-import { register } from '../api/api';
-import { useAuth } from '../context/AuthContext';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import { register } from "../api/api";
+import { useAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
+import toast, { Toaster } from "react-hot-toast";
+import { Eye, EyeOff } from "lucide-react";
 
 interface RegisterForm {
   username: string;
@@ -12,8 +14,13 @@ interface RegisterForm {
 
 const Register = () => {
   const { loginUser } = useAuth();
-  const [form, setForm] = useState<RegisterForm>({ username: '', email: '', password: '' });
+  const [form, setForm] = useState<RegisterForm>({
+    username: "",
+    email: "",
+    password: "",
+  });
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -22,85 +29,97 @@ const Register = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const loadingToast = toast.loading("Logging in...");
+    setIsLoading(true);
     try {
       const res = await register(form);
       loginUser(res.data); // sets user and token
-      alert('Registration successful!');
-      navigate('/');
-    } catch (err) {
+      toast.success("Registration successful!");
+      navigate("/");
+    } catch (err: any) {
       console.error(err);
-      alert('Registration failed');
+      if (err.response && err.response.status === 409) {
+        toast.error("User already exists with this email");
+      } else {
+        toast.error("Registration failed");
+      }
+    } finally {
+      setIsLoading(false);
+      toast.dismiss(loadingToast);
     }
   };
 
- return (
-  <div className="min-h-screen flex items-center justify-center bg-hero">
-    <form 
-      onSubmit={handleSubmit} 
-      className="w-full max-w-md bg-gray-900 text-white p-8 rounded-xl shadow-lg"
-    >
-      <h1 className="text-3xl font-bold text-center mb-2">Create Account</h1>
-      <p className="text-center text-gray-400 mb-6">
-        Sign up to start your productivity journey
-      </p>
-
-      {/* Username */}
-      <label className="block mb-2 font-medium text-left">Username</label>
-      <input
-        type="text"
-        name="username"
-        value={form.username}
-        onChange={handleChange}
-        placeholder="Enter your username"
-        className="w-full mb-4 p-2 rounded-lg bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-500"
-      />
-
-      {/* Email */}
-      <label className="block mb-2 font-medium text-left">Email</label>
-      <input
-        type="email"
-        name="email"
-        value={form.email}
-        onChange={handleChange}
-        placeholder="Enter your email"
-        className="w-full mb-4 p-2 rounded-lg bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-500"
-      />
-
-      {/* Password */}
-      <label className="block mb-2 font-medium text-left">Password</label>
-      <div className="relative mb-4">
-        <input
-          type={showPassword ? 'text' : 'password'}
-          name="password"
-          value={form.password}
-          onChange={handleChange}
-          placeholder="Enter your password"
-          className="w-full p-2 rounded-lg bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-500"
-        />
-        <button
-          type="button"
-          onClick={() => setShowPassword(!showPassword)}
-          className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white"
-        >
-          {showPassword ? '🙈' : '👁️'}
-        </button>
-      </div>
-
-      {/* Submit */}
-      <button
-        type="submit"
-        className="w-full py-3 mb-4 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-lg font-bold hover:opacity-90 transition"
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-hero">
+      <form
+        onSubmit={handleSubmit}
+        className="w-full max-w-md bg-gray-900 text-white p-8 rounded-xl shadow-lg transition-shadow duration-300 hover:shadow-[0_0_10px_#ffffff]"
       >
-        Register
-      </button>
+        <h1 className="text-3xl font-bold text-center mb-2">Create Account</h1>
+        <p className="text-center text-gray-400 mb-6">
+          Sign up to start your productivity journey
+        </p>
 
-      <p className="text-center text-gray-400 text-sm">
-        Already have an account? <a href="/" className="text-purple-400 hover:underline">Sign in</a>
-      </p>
-    </form>
-  </div>
-);
+        {/* Username */}
+        <label className="block mb-2 font-medium text-left">Username</label>
+        <input
+          type="text"
+          name="username"
+          value={form.username}
+          onChange={handleChange}
+          placeholder="Enter your username"
+          className="w-full mb-4 p-2 text-sm rounded-lg bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-500"
+        />
 
+        {/* Email */}
+        <label className="block mb-2 font-medium text-left">Email</label>
+        <input
+          type="email"
+          name="email"
+          value={form.email}
+          onChange={handleChange}
+          placeholder="Enter your email"
+          className="w-full mb-4 p-2 text-sm rounded-lg bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-500"
+        />
+
+        {/* Password */}
+        <label className="block mb-2 font-medium text-left">Password</label>
+        <div className="relative mb-4">
+          <input
+            type={showPassword ? "text" : "password"}
+            name="password"
+            value={form.password}
+            onChange={handleChange}
+            placeholder="Enter your password"
+            className="w-full p-2 text-sm rounded-lg bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-500"
+          />
+          <button
+            type="button"
+            onClick={() => setShowPassword(!showPassword)}
+            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white"
+          >
+            {showPassword ? <Eye /> : <EyeOff />}
+          </button>
+        </div>
+
+        {/* Submit */}
+        <button
+          type="submit"
+          className="w-full py-3 mb-4 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-lg font-bold hover:opacity-90 transition"
+        >
+          {isLoading ? "Registering..." : "Register"}
+        </button>
+
+        <p className="text-center text-gray-400 text-sm">
+          Already have an account?{" "}
+          <a href="/" className="text-purple-400 hover:underline">
+            Sign in
+          </a>
+        </p>
+      </form>
+      <Toaster position="top-center" />
+    </div>
+  );
 };
 
 export default Register;
