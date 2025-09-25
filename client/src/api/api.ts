@@ -28,11 +28,7 @@ api.interceptors.response.use(
   }
 );
 
-// // Set auth token in headers
-// export const setAuthToken = (token?: string) => {
-//   if (token) api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-//   else delete api.defaults.headers.common['Authorization'];
-// };
+
 
 // Payload types
 export interface AuthPayload {
