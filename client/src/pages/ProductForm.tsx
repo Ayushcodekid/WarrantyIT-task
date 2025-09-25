@@ -33,7 +33,6 @@ const ProductForm = () => {
   const navigate = useNavigate();
 
   const { user } = useAuth() as any; // Get current user from context
-  console.log(user);
 
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
