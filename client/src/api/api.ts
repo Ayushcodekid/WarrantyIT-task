@@ -3,7 +3,7 @@ import axios from 'axios';
 import type { AxiosInstance } from 'axios';
 import toast from 'react-hot-toast';
 
-const API_BASE = 'http://localhost:9000/api';
+const API_BASE = 'https://warrantyit-task.onrender.com/api';
 
 // Create axios instance
 const api: AxiosInstance = axios.create({
