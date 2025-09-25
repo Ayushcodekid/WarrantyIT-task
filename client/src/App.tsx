@@ -16,17 +16,17 @@ function App() {
         <Route
           path="/landing"
           element={
-            <ProtectedRoute>
+            // <ProtectedRoute>
               <LandingPage />
-            </ProtectedRoute>
+            // </ProtectedRoute>
           }
         />
         <Route
           path="/productsForm"
           element={
-            <ProtectedRoute>
+            // <ProtectedRoute>
               <ProductForm />
-            </ProtectedRoute>
+            // </ProtectedRoute>
           }
         />
         <Route path="*" element={<Navigate to="/" replace />} />
