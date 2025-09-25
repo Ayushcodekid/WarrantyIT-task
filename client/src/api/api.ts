@@ -1,6 +1,7 @@
 // src/api/index.ts
 import axios from 'axios';
 import type { AxiosInstance } from 'axios';
+import toast from 'react-hot-toast';
 
 const API_BASE = 'http://localhost:9000/api';
 
@@ -9,6 +10,22 @@ const api: AxiosInstance = axios.create({
   baseURL: API_BASE,
   headers: { 'Content-Type': 'application/json' },
 });
+
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    const msg =
+      error.response?.data?.message ||
+      error.message ||
+      "Something went wrong. Please try again.";
+
+    // Show toast automatically
+    toast.error(msg);
+
+    // Still reject so caller knows request failed
+    return Promise.reject(error);
+  }
+);
 
 // Set auth token in headers
 export const setAuthToken = (token?: string) => {

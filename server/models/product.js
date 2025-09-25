@@ -1,5 +1,12 @@
-module.exports = (sequelize, DataTypes) => {
-  const Product = sequelize.define('Product', {
+const { DataTypes } = require("sequelize");
+const sequelize = require("../config/db"); // import Sequelize instance
+
+const Product = sequelize.define("Product", {
+  id: {
+    type: DataTypes.UUID,
+    defaultValue: DataTypes.UUIDV4,
+      primaryKey: true,
+    },
     name: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -32,7 +39,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     },
     userId: { 
-      type: DataTypes.INTEGER,
+      type: DataTypes.UUID,
       allowNull: false, // or true if optional
       references: {
         model: 'Users', // table name
@@ -46,5 +53,5 @@ module.exports = (sequelize, DataTypes) => {
     Product.belongsTo(models.User, { foreignKey: 'userId', as: 'user' });
   };
 
-  return Product;
-};
+module.exports = Product;
+

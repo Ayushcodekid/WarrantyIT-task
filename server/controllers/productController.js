@@ -1,8 +1,8 @@
 const sequelize = require("../config/db");
 const { DataTypes } = require("sequelize");
 
-const Product = require("../models/product")(sequelize, DataTypes);
-const User = require("../models/user")(sequelize, DataTypes);
+const Product = require("../models/product");
+const User = require("../models/user");
 
 User.hasMany(Product, { foreignKey: "userId" });
 Product.belongsTo(User, { foreignKey: "userId" });
@@ -14,7 +14,7 @@ const createProduct = async (req, res) => {
 
     // optional: validate that user exists
     const user = await User.findByPk(userId);
-    if (!user) return res.status(404).json({ error: "User not found" });
+    if (!user) return res.status(404).json({ message: "User not found" });
 
     const product = await Product.create({
       name,
@@ -66,12 +66,12 @@ const getUserProductById = async (req, res) => {
 // UPDATE PRODUCT
 const updateProduct = async (req, res) => {
   try {
-    const { name, brand, type, warrantyPeriod, startDate } = req.body;
+    const { name, brand, type, modelNumber, warrantyPeriod, price, description, startDate, userId } = req.body;
 
     const product = await Product.findByPk(req.params.id);
     if (!product) return res.status(404).json({ error: "Product not found" });
 
-    await product.update({ name, brand, type, warrantyPeriod, startDate });
+    await product.update({ name, brand, type, modelNumber, warrantyPeriod, price, description, startDate, userId });
     res.json(product);
   } catch (err) {
     console.error(err);

@@ -9,7 +9,6 @@ const LandingPage = () => {
       <Header />
 
       {/* Main content */}
-
       <main className="flex-grow flex flex-col pt-10 px-4 sm:px-6 lg:px-8">
         {/* Product List takes full width */}
         <ProductListPage />

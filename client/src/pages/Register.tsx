@@ -38,11 +38,6 @@ const Register = () => {
       navigate("/");
     } catch (err: any) {
       console.error(err);
-      if (err.response && err.response.status === 409) {
-        toast.error("User already exists with this email");
-      } else {
-        toast.error("Registration failed");
-      }
     } finally {
       setIsLoading(false);
       toast.dismiss(loadingToast);

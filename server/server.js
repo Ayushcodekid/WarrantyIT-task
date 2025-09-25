@@ -13,8 +13,8 @@ app.use(cors());
 
 
 // Initialize models
-const User = require('./models/user')(sequelize, DataTypes);
-const Product = require('./models/product')(sequelize, DataTypes);
+const User = require('./models/user');
+const Product = require('./models/product');
 
 // Define associations
 User.hasMany(Product, { foreignKey: 'userId' });
@@ -29,7 +29,7 @@ app.use('/api/products', productRoutes);
 sequelize
   .sync({ alter: true }) // { alter: true } updates tables without dropping
   .then(() => {
-    console.log('✅ Database synced with Neon PostgreSQL');
-    app.listen(9000, () => console.log('🚀 Server running on port 9000'));
+    console.log('Database synced with Neon PostgreSQL');
+    app.listen(9000, () => console.log('Server running on port 9000'));
   })
   .catch((err) => console.error('❌ Database connection failed:', err));

@@ -33,15 +33,6 @@ const Login = () => {
       toast.success("Login successful!");
     } catch (err: any) {
       console.error(err);
-      if (err.response && err.response.status === 404) {
-        toast.error("User not found");
-      } 
-      else if (err.response && err.response.status === 401) {
-        toast.error("Invalid password");
-      }
-      else {
-        toast.error("Login failed");
-      }
     } finally {
       setIsLoading(false);
       toast.dismiss(loadingToast);
@@ -88,12 +79,6 @@ const Login = () => {
           >
             {showPassword ? <Eye /> : <EyeOff />}
           </button>
-        </div>
-
-        <div className="text-center mb-4">
-          <a href="#" className="text-purple-400 hover:underline text-sm">
-            Forgot password?
-          </a>
         </div>
 
         {/* Submit */}

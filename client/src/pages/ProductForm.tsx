@@ -92,7 +92,7 @@ const ProductForm = () => {
       setErrors({});
     } catch (err: any) {
       console.error(err);
-      alert(err?.response?.data?.message || "Failed to create product");
+      toast.error("Failed to add product. Please try again.");
     } finally {
       setIsLoading(false);
       toast.dismiss(loadingToast);
