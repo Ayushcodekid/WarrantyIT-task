@@ -11,7 +11,7 @@ const app = express();
 app.use(express.json());
 app.use(
   cors({
-    origin: "https://warrantyit-task.onrender.com",
+    origin: "https://warrantyit-app.netlify.app",
     credentials: true,
   })
 );
