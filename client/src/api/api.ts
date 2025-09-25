@@ -9,6 +9,7 @@ const API_BASE = 'https://warrantyit-task.onrender.com/api';
 const api: AxiosInstance = axios.create({
   baseURL: API_BASE,
   headers: { 'Content-Type': 'application/json' },
+  withCredentials: true, // ✅ send cookies automatically
 });
 
 api.interceptors.response.use(
@@ -27,11 +28,11 @@ api.interceptors.response.use(
   }
 );
 
-// Set auth token in headers
-export const setAuthToken = (token?: string) => {
-  if (token) api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-  else delete api.defaults.headers.common['Authorization'];
-};
+// // Set auth token in headers
+// export const setAuthToken = (token?: string) => {
+//   if (token) api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+//   else delete api.defaults.headers.common['Authorization'];
+// };
 
 // Payload types
 export interface AuthPayload {
@@ -55,10 +56,7 @@ export const login = (payload: AuthPayload) => api.post('/users/login', payload)
 
 // Product APIs
 export const createProduct = (payload: ProductPayload) => api.post('/products/create', payload);
-export const getProducts = () => api.get('/products/list');
 export const getUserProduct = (userId: number) => api.get(`/products/get/${userId}`);
-export const updateProduct = (id: number, payload: Partial<ProductPayload>) =>
-  api.put(`/products/update/${id}`, payload);
 export const deleteProduct = (id: number) => api.delete(`/products/delete/${id}`);
 
 export default api;

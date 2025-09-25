@@ -1,6 +1,3 @@
-const sequelize = require("../config/db");
-const { DataTypes } = require("sequelize");
-
 const Product = require("../models/product");
 const User = require("../models/user");
 
@@ -10,7 +7,17 @@ Product.belongsTo(User, { foreignKey: "userId" });
 // Create a product
 const createProduct = async (req, res) => {
   try {
-    const { name, brand, type, modelNumber, warrantyPeriod, price, description, startDate, userId } = req.body;
+    const {
+      name,
+      brand,
+      type,
+      modelNumber,
+      warrantyPeriod,
+      price,
+      description,
+      startDate,
+      userId,
+    } = req.body;
 
     // optional: validate that user exists
     const user = await User.findByPk(userId);
@@ -52,9 +59,9 @@ const listProducts = async (req, res) => {
 const getUserProductById = async (req, res) => {
   try {
     const products = await Product.findAll({
-  where: { userId: req.params.userId },
-  include: [{ model: User, attributes: ['id', 'username', 'email'] }],
-});
+      where: { userId: req.params.userId },
+      include: [{ model: User, attributes: ["id", "username", "email"] }],
+    });
 
     res.json(products);
   } catch (err) {
@@ -64,20 +71,20 @@ const getUserProductById = async (req, res) => {
 };
 
 // UPDATE PRODUCT
-const updateProduct = async (req, res) => {
-  try {
-    const { name, brand, type, modelNumber, warrantyPeriod, price, description, startDate, userId } = req.body;
+// const updateProduct = async (req, res) => {
+//   try {
+//     const { name, brand, type, modelNumber, warrantyPeriod, price, description, startDate, userId } = req.body;
 
-    const product = await Product.findByPk(req.params.id);
-    if (!product) return res.status(404).json({ error: "Product not found" });
+//     const product = await Product.findByPk(req.params.id);
+//     if (!product) return res.status(404).json({ error: "Product not found" });
 
-    await product.update({ name, brand, type, modelNumber, warrantyPeriod, price, description, startDate, userId });
-    res.json(product);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Failed to update product" });
-  }
-};
+//     await product.update({ name, brand, type, modelNumber, warrantyPeriod, price, description, startDate, userId });
+//     res.json(product);
+//   } catch (err) {
+//     console.error(err);
+//     res.status(500).json({ error: "Failed to update product" });
+//   }
+// };
 
 // DELETE PRODUCT
 const deleteProduct = async (req, res) => {
@@ -97,6 +104,5 @@ module.exports = {
   createProduct,
   listProducts,
   getUserProductById,
-  updateProduct,
   deleteProduct,
 };

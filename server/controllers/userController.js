@@ -1,8 +1,32 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const sequelize = require("../config/db");
-const { DataTypes } = require("sequelize");
 const User = require("../models/user");
+
+// Generate JWT
+const generateToken = (id) => {
+  return jwt.sign({ id }, process.env.JWT_SECRET, {
+    expiresIn: process.env.JWT_EXPIRES_IN || "1d",
+  });
+};
+
+const sendToken = (res, user) => {
+  const maxAge = 1 * 24 * 60 * 60 * 1000; // 1 days
+  res.cookie("token", generateToken(user.id), {
+    httpOnly: true, // JS cannot access cookie
+    secure: true, // true for production
+    sameSite: "None",
+    maxAge,
+  });
+
+  // send response
+  res.json({
+    user: {
+      id: user.id,
+      username: user.username,
+      email: user.email,
+    },
+  });
+};
 
 const createUser = async (req, res) => {
   try {
@@ -77,15 +101,7 @@ const loginUser = async (req, res) => {
       return res.status(401).json({ message: "Invalid password" });
     }
 
-    // generate JWT token
-    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
-      expiresIn: process.env.JWT_EXPIRES_IN || "1d", // default to 1 day
-    });
-
-    res.json({
-      token,
-      user: { id: user.id, username: user.username, email: user.email },
-    });
+    sendToken(res, user);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Login failed" });
