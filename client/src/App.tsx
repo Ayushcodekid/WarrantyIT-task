@@ -4,7 +4,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import LandingPage from "./pages/LandingPage";
 import ProductForm from "./pages/ProductForm";
-import ProtectedRoute from "./routes/ProtectedRoute";
+// import ProtectedRoute from "./routes/ProtectedRoute";
 
 function App() {
   return (
@@ -17,7 +17,7 @@ function App() {
           path="/landing"
           element={
             // <ProtectedRoute>
-              <LandingPage />
+            <LandingPage />
             // </ProtectedRoute>
           }
         />
@@ -25,7 +25,7 @@ function App() {
           path="/productsForm"
           element={
             // <ProtectedRoute>
-              <ProductForm />
+            <ProductForm />
             // </ProtectedRoute>
           }
         />
