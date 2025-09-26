@@ -29,6 +29,13 @@ This is a prototype application that allows users to manage product warranties. 
 ### Backend:
 - cd server
 - npm install
+- Create a .env file in the backend folder with the following variables:
+    PORT=9000
+    DATABASE_URL=<your_postgres_connection_url>
+    JWT_SECRET=<your_jwt_secret>
+    BCRYPT_SALT_ROUNDS=10
+    WT_EXPIRES_IN=1d
+
 - npm start
 
 ### Frontend:
